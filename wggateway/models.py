@@ -56,7 +56,7 @@ class Person(models.Model):
     lastname = models.CharField(max_length=192)
 
     def __unicode__(self):
-        return u'%s, %s' % (self.firstname, self.lastname)
+        return u'%s, %s' % (self.lastname, self.firstname)
 
     class Meta:
         verbose_name_plural="people"
