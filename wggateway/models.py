@@ -9,7 +9,7 @@
 
 from django.db import models
 
-class Address(models.Model):
+class AddressBase(models.Model):
     TYPE_CHOICES = (
         ('personal', 'Personal'),
         ('business', 'Business'),
@@ -33,6 +33,11 @@ class Address(models.Model):
 
     def __unicode__(self):
         return u'%s, %s' % (self.postcode, self.address1)
+
+    class Meta:
+        abstract = True
+
+class Address(AddressBase):
 
     class Meta:
         verbose_name_plural="addresses"
@@ -93,7 +98,7 @@ class Sipp(Client):
     def __unicode__(self):
         return u'%s %s' % (self.company, self.reference)
 
-class OldAddress(Address):
+class OldAddress(AddressBase):
     client = models.ForeignKey(Client)
     deprication_date = models.DateField()
 
