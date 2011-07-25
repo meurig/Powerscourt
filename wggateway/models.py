@@ -133,11 +133,11 @@ class PurchaseForm(models.Model):
         return self.code
 
 class Currency(models.Model):
-    code = models.CharField(max_length=8)
+    code = models.CharField(max_length=8, primary_key=True)
     name = models.CharField(max_length=32)
 
     def __unicode__(self):
-        return u'%s %s' % (self.code, self.name)
+        return u'%s - %s' % (self.code, self.name)
 
     class Meta:
         verbose_name_plural="currencies"
