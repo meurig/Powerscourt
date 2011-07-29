@@ -98,6 +98,12 @@ class Sipp(Client):
     def __unicode__(self):
         return u'%s %s' % (self.company, self.reference)
 
+class LLC(Client):
+    name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return u'%s' % (self.name)
+
 class OldAddress(AddressBase):
     client = models.ForeignKey(Client)
     deprication_date = models.DateField()
