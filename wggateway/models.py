@@ -138,7 +138,7 @@ class Product(models.Model):
         return self.name
 
 class PurchaseForm(models.Model):
-    code = models.CharField(max_length=16)
+    code = models.CharField(max_length=32)
 
     def __unicode__(self):
         return self.code
