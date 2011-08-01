@@ -156,6 +156,7 @@ class Currency(models.Model):
 class Purchase(models.Model):
     client = models.ForeignKey(Client)
     product = models.ForeignKey(Product)
+    code = models.CharField(max_length=8)
     active = models.IntegerField()
     password = models.CharField(max_length=32, blank=True)
     start_date = models.DateTimeField()
