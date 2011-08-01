@@ -174,6 +174,9 @@ class Purchase(models.Model):
     shares_cert_sent_date = models.DateField()
     notes = models.TextField()
 
+    def __unicode__(self):
+        return self.code
+
 class Rent(models.Model):
     purchase = models.ForeignKey(Purchase)
     due_date = models.DateField()
