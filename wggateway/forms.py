@@ -1,4 +1,5 @@
 from django import forms
+from models import Product
 
 class ContactForm(forms.Form):
     subject = forms.CharField()
@@ -10,3 +11,7 @@ class ClientSearchForm(forms.Form):
     name = forms.CharField(required=False)
     post_code = forms.CharField(required=False)
     email = forms.CharField(required=False)
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product

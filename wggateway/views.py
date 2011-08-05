@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
 from django.shortcuts import render_to_response
 from wggateway.models import Client
-from wggateway.forms import ContactForm, ClientSearchForm
+from wggateway.forms import ContactForm, ClientSearchForm, ProductForm
 
 def search(request):
     if request.method == 'POST':
@@ -33,3 +33,7 @@ def contact(request):
     else:
         form = ContactForm()
     return render_to_response('contact_form.html', {'form': form})
+
+def product(request):
+    form = ProductForm()
+    return render_to_response('product_form.html', {'form': form})
