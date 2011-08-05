@@ -1,19 +1,16 @@
-<html>
-    <head>
-        <title>Search Results</title>
-    </head>
-    <body>
-        <p>You searched for <strong>{{query}}</strong>
-
-        {% if clients %}
-            <p>Found {{ clients|length }} client{{ clients|pluralize }}.</p>
-            <ul>
-                {% for client in clients %}
-                <li>{{ client.code }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-        <p>No clients matched your search criteria.</p>
-        {% endif %}
-    </body>
-</html>
+{% extends "base.html" %}
+{% block title %}Client Search{% endblock %}
+{% block content %}
+    <h1>Client Search Results</h1>
+    <p>You searched for <strong>{{query}}</strong>
+    {% if clients %}
+        <p>Found {{ clients|length }} client{{ clients|pluralize }}.</p>
+        <ul>
+            {% for client in clients %}
+            <li>{{ client.code }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+    <p>No clients matched your search criteria.</p>
+    {% endif %}
+{% endblock %}
