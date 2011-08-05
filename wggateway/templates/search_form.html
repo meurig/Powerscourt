@@ -2,11 +2,16 @@
 {% block title %}Client Search{% endblock %}
 {% block content %}
     <h1>Client Search</h1>
-    {% if error %}
-    <p style="color: red;">Please submit a search term.</p>
+    {% if form.errors %}
+    <p style="color: red;">
+    Please correct the error{{ form.errors|pluralize }} below.
+    </p>
     {% endif %}
+
     <form action="" method="get">
-        <input type="text" name="q">
-        <input type="submit" value="Search">
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit">
     </form>
 {% endblock %}
