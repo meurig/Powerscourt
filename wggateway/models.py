@@ -49,6 +49,9 @@ class Client(models.Model):
     def __unicode__(self):
         return self.code
 
+    def get_absolute_url(self):
+        return "/client/%i/" % self.id
+
 class Person(models.Model):
     title = models.CharField(max_length=48)
     firstname = models.CharField(max_length=192)

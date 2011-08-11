@@ -1,6 +1,8 @@
 from django.conf.urls.defaults import *
 from wggateway import views
-from django.views.generic import list_detail
+#from django.views.generic import list_detail
+from django.views.generic import ListView
+from django.views.generic import DetailView
 from wggateway.models import Client
 
 # Uncomment the next two lines to enable the admin:
@@ -26,5 +28,13 @@ urlpatterns = patterns('',
     (r'^search/$', views.search),
     (r'^contact/$', views.contact),
     (r'^product/$', views.product),
-    (r'^clients/$', list_detail.object_list, client_info)
+    (r'^clients/$', ListView.as_view(
+        model=Client,
+        template_name="client_list.html",
+        )),
+    (r'^client/(?P<pk>\w+)/$', DetailView.as_view(
+        model=Client,
+        template_name="client_detail.html",
+        )),
+
 )
