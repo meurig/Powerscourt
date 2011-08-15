@@ -8,6 +8,7 @@
 # into your database.
 
 from django.db import models
+from model_utils.managers import InheritanceManager
 
 class AddressBase(models.Model):
     TYPE_CHOICES = (
@@ -45,12 +46,16 @@ class Address(AddressBase):
 class Client(models.Model):
     code = models.CharField(max_length=18, unique=True)
     address = models.ForeignKey(Address)
+    objects = InheritanceManager()
 
     def __unicode__(self):
         return self.code
 
     def get_absolute_url(self):
         return "/client/%i/" % self.id
+
+    def get_type(self):
+        return self.__class__.__name__
 
 class Person(models.Model):
     title = models.CharField(max_length=48)

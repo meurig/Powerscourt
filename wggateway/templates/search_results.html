@@ -2,7 +2,7 @@
 {% block title %}Client Search{% endblock %}
 {% block content %}
     <h1>Client Search Results</h1>
-    <p>You searched for <strong>{{query}}</strong>
+    <p>You searched for {# <strong>{{query}}</strong>#}
     {% if clients %}
         <p>Found {{ clients|length }} client{{ clients|pluralize }}.</p>
         <ul>

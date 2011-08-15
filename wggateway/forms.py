@@ -8,7 +8,8 @@ class ContactForm(forms.Form):
 
 class ClientSearchForm(forms.Form):
     client_code = forms.CharField(required=False)
-    name = forms.CharField(required=False)
+    #commented because it doesn't make much sense since a client can be a sipp with no name field
+    #name = forms.CharField(required=False)
     post_code = forms.CharField(required=False)
     email = forms.CharField(required=False)
 

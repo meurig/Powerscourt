@@ -3,7 +3,7 @@ from wggateway import views
 #from django.views.generic import list_detail
 from django.views.generic import ListView
 from django.views.generic import DetailView
-from wggateway.models import Client
+from wggateway.models import Client, GroupOfPeople
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -28,13 +28,20 @@ urlpatterns = patterns('',
     (r'^search/$', views.search),
     (r'^contact/$', views.contact),
     (r'^product/$', views.product),
-    (r'^clients/$', ListView.as_view(
-        model=Client,
+    (r'^clients/(?P<page>[0-9]*)$', ListView.as_view(
+        #model=Client,
+        queryset=Client.objects.all().select_subclasses(),
         template_name="client_list.html",
+        paginate_by=30,
         )),
     (r'^client/(?P<pk>\w+)/$', DetailView.as_view(
-        model=Client,
+        #model=Client,
+        queryset=Client.objects.all().select_subclasses(),
         template_name="client_detail.html",
         )),
-
+    (r'^clientsearch/$', views.clientsearch),
+    (r'^group/(?P<pk>\w+)/$', DetailView.as_view(
+        model=GroupOfPeople,
+        template_name="group_detail.html",
+        )),
 )
