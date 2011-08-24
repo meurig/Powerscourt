@@ -72,6 +72,11 @@ class Person(models.Model):
 class GroupOfPeople(Client):
     people = models.ManyToManyField(Person, blank=True)
 
+    def get_description(self):
+        for person in self.people.all():
+            return person
+
+
     def __unicode__(self):
         return self.code
 

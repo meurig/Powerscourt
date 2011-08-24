@@ -1,0 +1,177 @@
+#navcontainer {
+	border: 0px solid #000;
+	width: 150px;
+	float: left;
+}
+
+#content {
+	border: 0px solid #000;
+	margin-left: 150px;
+	padding: 0 20px 0 20px;
+}
+
+#navlist
+{
+	padding-left: 0;
+	/*margin-top: 5px;*/
+	margin-left: 0;
+	border-bottom: 1px solid #D0D0D0;
+	width: 150px;
+}
+
+#navlist li
+{
+	list-style: none;
+	margin: 0;
+	padding: 0.25em;
+	border-top: 1px solid #D0D0D0;
+	border-right: 1px solid #D0D0D0;
+}
+
+#navlist li a
+{
+	text-decoration: none;
+	color: #4F5155;
+}
+
+#navlist li.submenu
+{
+	border-top: 0;
+	border-right: 1px solid #D0D0D0;
+	padding-left: 15px;
+}
+
+#navlist li a#submenu_current, #navlist li a#menu_current
+{
+	text-decoration: none;
+	color: red;
+}
+
+
+body {
+	background-color: #fff;
+	/*margin: 40px;*/
+	font-family: Lucida Grande, Verdana, Sans-serif;
+	font-size: 12px;
+	color: #4F5155;
+     }
+
+     p, td {
+	     font-size: 12px;
+      }
+
+      a {
+	      color: #003399;
+	      background-color: transparent;
+	      font-weight: normal;
+ }
+
+ h1 {
+	 color: #444;
+	 background-color: transparent;
+	 border-bottom: 1px solid #D0D0D0;
+	 font-size: 16px;
+	 font-weight: bold;
+	 /*margin: 24px 0 2px 0;*/
+	 padding: 5px 0 6px 0;
+}
+
+.hidden {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	display: none;
+}
+
+.error {
+	/*margin: 5px 0px 5px 0px;*/
+	padding: 0px 0px 0px 20px;
+	color: red;
+}
+
+.formrow, .formheaderrow {
+	/*margin: 5px 0px 5px 0px;*/
+	padding: 0px 0px 0px 0px;
+}
+
+.formrowsubtotal1 {
+	/*margin: 15px 0px 5px 0px;*/
+	padding: 0px 0px 0px 0px;
+}
+
+.formrowsubtotal2 {
+	/*margin: 5px 0px 5px 0px;*/
+	padding: 0px 0px 0px 0px;
+}
+
+.formrowtotal {
+	/*margin: 5px 0px 35px 0px;*/
+	padding: 0px 0px 0px 0px;
+	font-weight: bold;
+}
+
+.formheaderrow {
+	/*margin-top: 20px;*/
+	border-top: 1px solid #D0D0D0;	
+}
+
+.formlabel1, .formlabel2, .formlabel, .formfield, .formfieldwide, .formamount, .formheadercell {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	display: inline-block;
+}
+
+.formheadercell {
+	/*margin-top: 10px;*/
+	/*margin-bottom: 5px;*/
+	width: 600px;
+	font-weight: bold;
+}
+
+.formlabel {
+	width: 180px;
+}
+
+.formlabel1, .formamountsmall {
+	width: 60px;
+}
+
+.formlabel2, .formamount {
+	width: 120px;
+}
+
+.formamount, .formamountsmall {
+	text-align: right;
+}
+
+.formfield {
+	width: 400px;
+	border-right: 0px solid #D0D0D0;
+}
+
+.formfieldwide {
+	width: 800px;
+	border-right: 0px solid #D0D0D0;
+}
+
+.formlabel p, .formlabel1 p, .formlabel2 p, .formfield p, .formamount p {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+.formfield input {
+	/*margin: 0px 0px 2px 0px;*/
+	padding: 0px 0px 0px 0px;
+}
+
+.forminput {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 200px;
+}
+
+.ps_row td {
+	padding: 0px 15px 0px 0px;	
+}
+
+.ps_col_amount {
+	text-align: right;
+}

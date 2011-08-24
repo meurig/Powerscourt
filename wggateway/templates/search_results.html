@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 {% block title %}Client Search{% endblock %}
 {% block content %}
-    <h1>Client Search Results</h1>
-    <p>You searched for {# <strong>{{query}}</strong>#}
-    {% if clients %}
-        <p>Found {{ clients|length }} client{{ clients|pluralize }}.</p>
-        <ul>
-            {% for client in clients %}
-            <li>{{ client.code }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-    <p>No clients matched your search criteria.</p>
-    {% endif %}
+<h1>Client Search Results</h1>
+{% if client_list %}
+<p>Found {{ client_list|length }} client{{ client_list|pluralize }}.</p>
+{% for client in client_list %}
+<div class="formrow">
+    <div class="formlabel1">
+        <a href="{{ client.get_absolute_url }}">{{ client.code }}</a>
+    </div>
+    <div class="formfield">
+        is of type {{ client.get_type }}
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<p>No client_list matched your search criteria.</p>
+{% endif %}
 {% endblock %}

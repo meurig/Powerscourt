@@ -2,6 +2,11 @@ from django.shortcuts import render_to_response
 from django.db.models import Q
 from wggateway.models import Client
 from wggateway.forms import ClientSearchForm, ProductForm
+from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)
+    return render_to_response('home.html')
 
 def clientsearch(request):
     if request.method == 'POST':
@@ -18,7 +23,7 @@ def clientsearch(request):
                 clients=Client.objects.filter(
                         Q(code__icontains=cd['client_code']))
             return render_to_response('search_results.html',
-                    { 'clients': clients })
+                    { 'client_list': clients.select_subclasses() })
     else:
         form = ClientSearchForm()
     return render_to_response('search_form.html', {'form': form})

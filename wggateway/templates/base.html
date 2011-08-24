@@ -1,18 +1,46 @@
 {% block doctype %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
 {% endblock %}
+
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-uk" xml:lang="en-uk" > 
     <head>
-        <title>{% block title %}{% endblock %}</title>
+        <title>
+            {% block title %}{% endblock %}
+        </title>
         {% load static %}
-        <link rel="stylesheet" href="{% get_static_prefix %}style.css" type="text/css">
+        <link rel="stylesheet" href="{% get_static_prefix %}layout.css" type="text/css">
+        <link rel="stylesheet" href="{% get_static_prefix %}style2.css" type="text/css">
+        {% block extrahead %}{% endblock %}
     </head>
+
     <body>
-        {% block content %}{% endblock %}
-        {% block footer %}
-        <hr>
-        <p>Powerscourt Services<br>
-        Enabling investments in overseas property</a>
-        {% endblock %}
+        <div id="wrap">
+            <div id="main">
+                <div id="navcontainer"> 
+                    <ul id="navlist"> 
+                        <li><a href="{% url home %}">Home</a></li> 
+                        <li><a href="{% url wggateway.views.clientsearch %}">Clients</a></li> 
+                        <li><a href="">Products</a></li> 
+                        <li><a href="">Accounts</a></li> 
+                        <li><a href="{% url admin:index %}">Admin</a></li> 
+                        <li><a href="{% url logout %}">Log out</a></li> 
+                    </ul> 
+                </div>
+
+                <div id="content">
+                    {% block content %}{% endblock %}
+                </div>
+
+                <div id="pagination">
+                    {% block pagination %}{% endblock %}
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            {% block footer %}
+            Powerscourt Services - Enabling investments in overseas property.
+            {% endblock %}
+        </div>
     </body>
 </html>
