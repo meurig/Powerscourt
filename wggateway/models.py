@@ -60,6 +60,9 @@ class Client(models.Model):
     address = models.ForeignKey(Address)
     objects = InheritanceManager()
 
+    def get_description(self):
+        return "Generic client object, no type assigned"
+
     def get_details(self):
         return [("ClientCode", self.code),
                 ("Type", self.get_type),
@@ -138,10 +141,14 @@ class Sipp(Client):
     reference = models.CharField(max_length=64)
     admin_person = models.ForeignKey(SippAdminPerson)
 
+    def get_description(self):
+        return self.company.name + ": " + self.reference
+
     def get_details(self):
         return [("ClientCode", self.code),
                 ("Type", self.get_type),
                 ("Provider", self.company),
+                ("Reference", self.reference),
                 ("Admin Person", self.admin_person)] + self.address.get_details()
 
     def __unicode__(self):
@@ -149,6 +156,12 @@ class Sipp(Client):
 
 class LLC(Client):
     name = models.CharField(max_length=64)
+
+    def get_details(self):
+        return [("ClientCode", self.code),
+                ("Type", self.get_type),
+                ("Name", self.name),
+                ] + self.address.get_details()
 
     def __unicode__(self):
         return u'%s' % (self.name)
