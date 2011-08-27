@@ -1,0 +1,12 @@
+{% block sidenav %}
+<ul id="navlist"> 
+    <li><a href="{% url home %}">Home</a></li> 
+    <li><a href="{% url wggateway.views.clientsearch %}">Clients</a></li> 
+    <li><a href="">Products</a></li> 
+    <li><a href="">Accounts</a></li> 
+    <li><a href="{% url admin:index %}">Admin</a></li> 
+    <li><a href="{% url logout %}">Log out</a></li> 
+</ul> 
+{% endblock %}
+{% block subsidenav %}
+{% endblock %}
