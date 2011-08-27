@@ -32,6 +32,18 @@ class AddressBase(models.Model):
     email1 = models.EmailField(blank=True)
     email2 = models.EmailField(blank=True)
 
+    def get_details(self):
+        return [("Address", self.address1),
+                ("", self.address2),
+                ("", self.address3),
+                ("", self.city),
+                ("", self.county),
+                ("", self.postcode),
+                ("", self.country),
+                ("Email", self.email1),
+                ("Phone", self.phone1)]
+
+
     def __unicode__(self):
         return u'%s, %s' % (self.postcode, self.address1)
 
@@ -48,6 +60,11 @@ class Client(models.Model):
     address = models.ForeignKey(Address)
     objects = InheritanceManager()
 
+    def get_details(self):
+        return [("ClientCode", self.code),
+                ("Type", self.get_type),
+                ] + self.address.get_details()
+
     def __unicode__(self):
         return self.code
 
@@ -63,6 +80,9 @@ class Person(models.Model):
     middlename = models.CharField(max_length=192, blank=True)
     lastname = models.CharField(max_length=192)
 
+    def get_readable_name(self):
+        return self.title + ". " + self.firstname + " " + self.lastname
+
     def __unicode__(self):
         return u'%s, %s' % (self.lastname, self.firstname)
 
@@ -72,10 +92,20 @@ class Person(models.Model):
 class GroupOfPeople(Client):
     people = models.ManyToManyField(Person, blank=True)
 
-    def get_description(self):
+    def get_names(self):
+        names=[]
         for person in self.people.all():
-            return person
+            names.append(person.get_readable_name())
+        return names
 
+    def get_description(self):
+        names=self.get_names()
+        return ', '.join(names)
+
+    def get_details(self):
+        return [("ClientCode", self.code),
+                ("Type", self.get_type),
+                ("People", self.get_description)] + self.address.get_details()
 
     def __unicode__(self):
         return self.code
@@ -107,6 +137,12 @@ class Sipp(Client):
     company = models.ForeignKey(SippProvider)
     reference = models.CharField(max_length=64)
     admin_person = models.ForeignKey(SippAdminPerson)
+
+    def get_details(self):
+        return [("ClientCode", self.code),
+                ("Type", self.get_type),
+                ("Provider", self.company),
+                ("Admin Person", self.admin_person)] + self.address.get_details()
 
     def __unicode__(self):
         return u'%s %s' % (self.company, self.reference)

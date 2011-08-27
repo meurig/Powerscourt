@@ -2,6 +2,18 @@
 {% block title %}Client Detail{% endblock %}
 {% block content %}
     <h1>Client Detail</h1>
-    <p>{{ object.code }} is of type {{ object.get_type }}</p>
-    <p>{{ object.get_description }}</p>
+
+    {% for field, value in object.get_details %}
+    {% if value %}
+    <div class="formrow"> 
+        <div class="formlabel2"> 
+            {{ field }}
+        </div> 
+        <div class="formfield"> 
+            {{ value }}
+        </div> 
+    </div> 
+    {% endif %}
+    {% endfor %}
+
 {% endblock %}
