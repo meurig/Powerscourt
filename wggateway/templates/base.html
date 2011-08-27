@@ -17,7 +17,11 @@
         <div id="wrap">
             <div id="main">
                 <div id="navcontainer"> 
+                    {% block sidenav %}
                     {% include "sidenav.html" %}
+                    {% block subsidenav %}
+                    {% endblock subsidenav %}
+                    {% endblock sidenav %}
                 </div>
 
                 <div id="content">

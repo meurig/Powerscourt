@@ -10,16 +10,17 @@
 	padding: 0 20px 0 20px;
 }
 
-#navlist
+#navlist, #subnavlist
 {
 	padding-left: 0;
 	/*margin-top: 5px;*/
+	margin-top: 5px;
 	margin-left: 0;
 	border-bottom: 1px solid #D0D0D0;
 	width: 150px;
 }
 
-#navlist li
+#navlist li, #subnavlist li
 {
 	list-style: none;
 	margin: 0;
@@ -28,7 +29,7 @@
 	border-right: 1px solid #D0D0D0;
 }
 
-#navlist li a
+#navlist li a, #subnavlist li a
 {
 	text-decoration: none;
 	color: #4F5155;
