@@ -1,0 +1,19 @@
+{% extends "product.html" %}
+{% block title %}Product Detail{% endblock %}
+{% block content %}
+    <h1>Product Detail</h1>
+
+    {% for field, value in object.get_details %}
+    {% if value %}
+    <div class="formrow"> 
+        <div class="formlabel2"> 
+            {{ field }}
+        </div> 
+        <div class="formfield"> 
+            {{ value }}
+        </div> 
+    </div> 
+    {% endif %}
+    {% endfor %}
+
+{% endblock %}

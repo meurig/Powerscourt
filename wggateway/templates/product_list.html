@@ -1,0 +1,33 @@
+{% extends "product.html" %}
+
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+<h1>Product List</h1>
+{% for product in product_list %}
+<div class="formrow">
+    <div class="formlabel1">
+        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+    </div>
+    <div class="formfield">
+        {{ product.provider }}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block pagination %}
+<span class="step-links">
+    {% if page_obj.has_previous %}
+    <a href="{{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+    <a href="{{ page_obj.next_page_number }}">next</a>
+    {% endif %}
+</span>
+{% endblock %}

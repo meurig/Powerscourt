@@ -196,6 +196,16 @@ class Product(models.Model):
     increment = models.IntegerField()
     display_order = models.IntegerField()
 
+    def get_absolute_url(self):
+        return "/product/%i/" % self.id
+
+    def get_details(self):
+        return [("Provider", self.provider.name),
+                ("Name", self.name),
+                ("Prefix", self.prefix),
+                ("Increment", self.increment),
+                ("Display Order", self.display_order)]
+
     def __unicode__(self):
         return self.name
 
