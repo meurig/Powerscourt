@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from wggateway import views
 from django.views.generic import DetailView, ListView, TemplateView
-from wggateway.models import Client, GroupOfPeople
+from wggateway.models import Client, GroupOfPeople, Sipp
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -25,6 +25,24 @@ urlpatterns = patterns('',
         template_name="client_list.html",
         paginate_by=25,
         ), name="clients"),
+    url(r'^clients/people/(?P<page>[0-9]*)$', ListView.as_view(
+        queryset=GroupOfPeople.objects.all(),
+        context_object_name="client_list",
+        template_name="client_list.html",
+        paginate_by=25,
+        ), name="clients_people"),
+    url(r'^clients/sipps/(?P<page>[0-9]*)$', ListView.as_view(
+        queryset=Sipp.objects.all(),
+        context_object_name="client_list",
+        template_name="client_list.html",
+        paginate_by=25,
+        ), name="clients_sipps"),
+    url(r'^clients/other/(?P<page>[0-9]*)$', ListView.as_view(
+        queryset=filter((lambda x: not isinstance(x, GroupOfPeople) and not isinstance(x, Sipp)), Client.objects.all().select_subclasses()),
+        context_object_name="client_list",
+        template_name="client_list.html",
+        paginate_by=25,
+        ), name="clients_other"),
     url(r'^client/(?P<pk>\w+)/$', DetailView.as_view(
         #model=Client,
         queryset=Client.objects.all().select_subclasses(),

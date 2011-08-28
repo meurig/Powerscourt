@@ -2,8 +2,8 @@
 {% block subsidenav %}
 <ul id="subnavlist"> 
     <li><a href="{% url clients page=1 %}">All Clients</a></li> 
-    <li><a href="{% url clients 1 %}">Clients (People)</a></li> 
-    <li><a href="">Clients (Sipps)</a></li> 
-    <li><a href="">Clients (Other)</a></li> 
+    <li><a href="{% url clients_people page=1 %}">Clients (People)</a></li> 
+    <li><a href="{% url clients_sipps page=1 %}">Clients (Sipps)</a></li> 
+    <li><a href="{% url clients_other page=1 %}">Clients (Other)</a></li> 
 </ul> 
 {% endblock %}
