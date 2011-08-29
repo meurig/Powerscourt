@@ -1,0 +1,41 @@
+{% extends "purchase.html" %}
+{% load humanize %}
+{% block title %}Purchase Detail{% endblock %}
+{% block content %}
+    <h1>Purchase Detail</h1>
+    <div class="formrow"><div class="formlabel2">Purchase Code</div><div class="formfield">{{ purchase.code }}</div></div>
+    <div class="formrow"><div class="formlabel2">Client Code</div><div class="formfield">{{ purchase.client.code }}</div></div>
+    <div class="formrow"><div class="formlabel2">Client</div><div class="formfield">{{ purchase.client.get_description }}</div></div>
+    <div class="formrow"><div class="formlabel2">Current</div><div class="formfield">{{ purchase.get_active }}</div></div>
+    <div class="formrow"><div class="formlabel2">Provider</div><div class="formfield">{{ purchase.product.provider }}</div></div>
+    <div class="formrow"><div class="formlabel2">Start Date</div><div class="formfield">{{ purchase.start_date|date:"SHORT_DATE_FORMAT" }}</div></div>
+    <div class="formrow"><div class="formlabel2">Form Code</div><div class="formfield">{{ purchase.form.code }}</div></div>
+    <div class="formrow"><div class="formlabel2">Password</div><div class="formfield">{{ purchase.password }}</div></div>
+    <div class="formrow"><div class="formlabel2">Signature Date</div><div class="formfield">{{ purchase.signature_date|date:"SHORT_DATE_FORMAT" }}</div></div> 
+    <div class="formrow"><div class="formlabel2">Amount Invested</div><div class="formfield">{{ purchase.notional_currency.code }} {{ purchase.get_notional|intcomma }}</div></div> 
+    <div class="formrow">
+        <div class="formlabel2">Returns</div>
+        <div class="formfieldwide">
+            <table class="ps_table"> 
+                <tr class="ps_row"> 
+                    <td class="ps_col">Date</td> 
+                    <td class="ps_col">Type</td> 
+                    <td class="ps_col">Amount</td> 
+                    <td class="ps_col">Fees Deducted</td> 
+                    <td class="ps_col">PS Fees Added</td> 
+                    <td class="ps_col">Paid</td> 
+                </tr> 
+                {% for rent in purchase.rent_set.all %}
+                <tr class="ps_row">
+                    <td class="ps_col">{{ rent.due_date|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td class="ps_col">{{ rent.type }}</td>
+                    <td class="ps_col">{{ rent.base_currency.code }} {{ rent.base_amount|intcomma }}</td>
+                    <td class="ps_col">?</td>
+                    <td class="ps_col">?</td>
+                    <td class="ps_col">{{ rent.get_paid }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div> 
+    {% endblock %}

@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from wggateway import views
 from django.views.generic import DetailView, ListView, TemplateView
-from wggateway.models import Client, GroupOfPeople, Sipp, Product
+from wggateway.models import Client, GroupOfPeople, Sipp, Product, Purchase
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -57,5 +57,14 @@ urlpatterns = patterns('',
     url(r'^product/(?P<pk>\w+)/$', DetailView.as_view(
         queryset=Product.objects.all(),
         template_name="product_detail.html",
+        )),
+    url(r'^purchases/(?P<page>[0-9]*)$', ListView.as_view(
+        queryset=Purchase.objects.all(),
+        template_name="purchase_list.html",
+        paginate_by=25,
+        ), name="purchases"),
+    url(r'^purchase/(?P<pk>\w+)/$', DetailView.as_view(
+        queryset=Purchase.objects.all(),
+        template_name="purchase_detail.html",
         )),
 )

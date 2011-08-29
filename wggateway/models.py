@@ -9,6 +9,7 @@
 
 from django.db import models
 from model_utils.managers import InheritanceManager
+import locale
 
 class AddressBase(models.Model):
     TYPE_CHOICES = (
@@ -246,6 +247,18 @@ class Purchase(models.Model):
     shares_cert_sent_date = models.DateField()
     notes = models.TextField()
 
+    def get_notional(self):
+        return self.notional / 100
+
+    def get_absolute_url(self):
+        return "/purchase/%i/" % self.id
+
+    def get_active(self):
+        if self.active == 1:
+            return "Yes"
+        else:
+            return "No"
+
     def __unicode__(self):
         return self.code
 
@@ -270,6 +283,15 @@ class Rent(models.Model):
         ('principal', 'Principal'),
     )
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+
+    def get_paid(self):
+        if self.paid == 1:
+            return "Yes"
+        else:
+            return "No"
+
+    class Meta:
+        verbose_name_plural="rent"
 
 #class UserInput(models.Model):
     #createddate = models.DateTimeField()

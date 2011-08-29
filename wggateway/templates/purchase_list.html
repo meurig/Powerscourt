@@ -1,0 +1,21 @@
+{% extends "purchase.html" %}
+
+{% block title %}Purchase List{% endblock %}
+
+{% block content %}
+<h1>Purchase List</h1>
+{% for purchase in purchase_list %}
+<div class="formrow">
+    <div class="formlabel1">
+        <a href="{{ purchase.get_absolute_url }}">{{ purchase.code }}</a>
+    </div>
+    <div class="formfield">
+        {{ purchase.client.code }} ({{ purchase.product }}, {{ purchase.product.provider }}, {{ purchase.notional }} {{ purchase.notional_currency.code }})
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block pagination %}
+{% include "pagination.html" %}
+{% endblock %}
