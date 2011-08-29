@@ -41,9 +41,7 @@ class AddressBase(models.Model):
                 ("", self.county),
                 ("", self.postcode),
                 ("", self.country),
-                ("Email", self.email1),
-                ("Phone", self.phone1)]
-
+                ]
 
     def __unicode__(self):
         return u'%s, %s' % (self.postcode, self.address1)
@@ -63,11 +61,6 @@ class Client(models.Model):
 
     def get_description(self):
         return "Generic client object, no type assigned"
-
-    def get_details(self):
-        return [("ClientCode", self.code),
-                ("Type", self.get_type),
-                ] + self.address.get_details()
 
     def __unicode__(self):
         return self.code
@@ -199,13 +192,6 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return "/product/%i/" % self.id
-
-    def get_details(self):
-        return [("Provider", self.provider.name),
-                ("Name", self.name),
-                ("Prefix", self.prefix),
-                ("Increment", self.increment),
-                ("Display Order", self.display_order)]
 
     def __unicode__(self):
         return self.name

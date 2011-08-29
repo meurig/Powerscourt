@@ -1,19 +1,25 @@
 {% extends "client.html" %}
+{% load humanize %}
+
 {% block title %}Client Detail{% endblock %}
+
 {% block content %}
-    <h1>Client Detail</h1>
-
-    {% for field, value in object.get_details %}
-    {% if value %}
-    <div class="formrow"> 
-        <div class="formlabel2"> 
-            {{ field }}
-        </div> 
-        <div class="formfield"> 
-            {{ value }}
-        </div> 
-    </div> 
-    {% endif %}
-    {% endfor %}
-
+<h1>Client Detail</h1>
+<div class="formrow"><div class="formlabel2">Client Code</div><div class="formfield">{{ client.code }}</div>
+    <div class="formlabel2"><a href="{% url admin:wggateway_client_change client.id %}">Edit</a></div>
+</div> 
+<div class="formrow"><div class="formlabel2">Type</div><div class="formfield">{{ client.get_type }}</div></div> 
+<div class="formrow"><div class="formlabel2">Description</div><div class="formfield">{{ client.get_description }}</div></div> 
+{% for field, value in client.address.get_details %}
+{% if value %}
+<div class="formrow"><div class="formlabel2">{{ field }}</div><div class="formfield">{{ value }}</div></div> 
+{% endif %}
+{% endfor %}
+<div class="formrow"><div class="formlabel2">Email</div><div class="formfield"><a href="mailto:{{ client.address.email1 }}">{{ client.address.email1 }}</a></div></div> 
+<div class="formrow"><div class="formlabel2">Phone</div><div class="formfield">{{ client.address.phone1 }}</div></div> 
+{% for purchase in client.purchase_set.all %}
+<div class="formrow">
+    <div class="formlabel2">Purchase</div><div class="formfield"><a href="{% url purchase purchase.id %}">{{ purchase.code }}</a>- {{ purchase.notional_currency.code }} {{ purchase.notional|intcomma }} -{{ purchase.product.provider }}: {{ purchase.product.name }}</div>
+</div> 
+{% endfor %}
 {% endblock %}
