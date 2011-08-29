@@ -19,7 +19,7 @@
 <div class="formrow"><div class="formlabel2">Phone</div><div class="formfield">{{ client.address.phone1 }}</div></div> 
 {% for purchase in client.purchase_set.all %}
 <div class="formrow">
-    <div class="formlabel2">Purchase</div><div class="formfield"><a href="{% url purchase purchase.id %}">{{ purchase.code }}</a>- {{ purchase.notional_currency.code }} {{ purchase.notional|intcomma }} -{{ purchase.product.provider }}: {{ purchase.product.name }}</div>
+    <div class="formlabel2">Purchase</div><div class="formfield"><a href="{% url purchase purchase.id %}">{{ purchase.code }}</a> - {{ purchase.notional_currency.code }} {{ purchase.notional|intcomma }} - {{ purchase.product.provider }}: {{ purchase.product.name }}</div>
 </div> 
 {% endfor %}
 {% endblock %}
