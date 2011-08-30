@@ -10,6 +10,7 @@
 from django.db import models
 from model_utils.managers import InheritanceManager
 import locale
+from django.core import urlresolvers
 
 class AddressBase(models.Model):
     TYPE_CHOICES = (
@@ -68,6 +69,9 @@ class Client(models.Model):
     def get_absolute_url(self):
         return "/client/%i/" % self.id
 
+    def get_admin_change_url(self):
+        return urlresolvers.reverse('admin:wggateway_client_change', args=(self.id,))
+
     def get_type(self):
         return self.__class__.__name__
 
@@ -104,6 +108,9 @@ class GroupOfPeople(Client):
                 ("Type", self.get_type),
                 ("People", self.get_description)] + self.address.get_details()
 
+    def get_admin_change_url(self):
+        return urlresolvers.reverse('admin:wggateway_groupofpeople_change', args=(self.id,))
+
     def __unicode__(self):
         return self.code
 
@@ -135,6 +142,9 @@ class Sipp(Client):
     reference = models.CharField(max_length=64)
     admin_person = models.ForeignKey(SippAdminPerson)
 
+    def get_admin_change_url(self):
+        return urlresolvers.reverse('admin:wggateway_sipp_change', args=(self.id,))
+
     def get_description(self):
         return self.company.name + ": " + self.reference
 
@@ -151,11 +161,8 @@ class Sipp(Client):
 class LLC(Client):
     name = models.CharField(max_length=64)
 
-    def get_details(self):
-        return [("ClientCode", self.code),
-                ("Type", self.get_type),
-                ("Name", self.name),
-                ] + self.address.get_details()
+    def get_admin_change_url(self):
+        return urlresolvers.reverse('admin:wggateway_llc_change', args=(self.id,))
 
     def __unicode__(self):
         return u'%s' % (self.name)

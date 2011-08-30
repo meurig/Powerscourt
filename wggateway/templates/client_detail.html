@@ -6,7 +6,7 @@
 {% block content %}
 <h1>Client Detail</h1>
 <div class="formrow"><div class="formlabel2">Client Code</div><div class="formfield">{{ client.code }}</div>
-    <div class="formlabel2"><a href="{% url admin:wggateway_client_change client.id %}">Edit</a></div>
+    <div class="formlabel2"><a href="{{ client.get_admin_change_url }}">Edit</a></div>
 </div> 
 <div class="formrow"><div class="formlabel2">Type</div><div class="formfield">{{ client.get_type }}</div></div> 
 <div class="formrow"><div class="formlabel2">Description</div><div class="formfield">{{ client.get_description }}</div></div> 
