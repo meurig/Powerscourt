@@ -16,6 +16,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
+    url(r'^chaining/', include('smart_selects.urls')),
 
     url(r'^product/$', views.product, name='product'),
     url(r'^home/$', TemplateView.as_view(template_name="home.html"), name="home"),
