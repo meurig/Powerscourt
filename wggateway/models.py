@@ -9,6 +9,7 @@
 
 from django.db import models
 from model_utils.managers import InheritanceManager
+from smart_selects.db_fields import ChainedForeignKey
 import locale
 from django.core import urlresolvers
 
@@ -140,7 +141,13 @@ class SippAdminPerson(models.Model):
 class Sipp(Client):
     company = models.ForeignKey(SippProvider)
     reference = models.CharField(max_length=64)
-    admin_person = models.ForeignKey(SippAdminPerson)
+    admin_person = ChainedForeignKey(
+            SippAdminPerson,
+            chained_field="company",
+            chained_model_field="company", 
+            show_all=False, 
+            auto_choose=True
+            )
 
     def get_admin_change_url(self):
         return urlresolvers.reverse('admin:wggateway_sipp_change', args=(self.id,))
