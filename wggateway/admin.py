@@ -1,6 +1,6 @@
 from django.contrib import admin
 from powerscourt.wggateway.models import Address, Client, Person, GroupOfPeople, LLC, SippProvider, SippAdminPerson, Sipp, OldAddress
-from powerscourt.wggateway.models import Syndicate, ProductProvider, Product, PurchaseForm, Currency, Purchase, Rent
+from powerscourt.wggateway.models import Syndicate, ProductProvider, Product, PurchaseForm, Currency, Purchase, Rent, SippAdminPersonAddress
 
 class GroupOfPeopleAdmin(admin.ModelAdmin):
     filter_horizontal = ('people',)
@@ -16,6 +16,15 @@ class PurchaseAdmin(admin.ModelAdmin):
 class SippAdmin(admin.ModelAdmin):
     exclude = ('address',)
 
+class SippAdminPersonAddressInLine(admin.StackedInline):
+    model = SippAdminPersonAddress
+
+class SippAdminPersonAdmin(admin.ModelAdmin):
+    inlines = [
+            SippAdminPersonAddressInLine,
+            ]
+
+
 admin.site.register(Address)
 admin.site.register(Client)
 admin.site.register(Currency)
@@ -29,6 +38,6 @@ admin.site.register(PurchaseForm)
 admin.site.register(Purchase, PurchaseAdmin)
 admin.site.register(Rent)
 admin.site.register(SippProvider)
-admin.site.register(SippAdminPerson)
+admin.site.register(SippAdminPerson,SippAdminPersonAdmin)
 admin.site.register(Sipp, SippAdmin)
 admin.site.register(Syndicate)

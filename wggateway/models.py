@@ -56,10 +56,16 @@ class Address(AddressBase):
     class Meta:
         verbose_name_plural="addresses"
 
+#class ClientAddress(AddressBase):
+
+    #class Meta:
+        #verbose_name_plural="client addresses"
+
 class Client(models.Model):
     code = models.CharField(max_length=18, unique=True)
     address = models.ForeignKey(Address)
     objects = InheritanceManager()
+    #clientaddress = models.OneToOneField(ClientAddress)
 
     def get_description(self):
         return "Generic client object, no type assigned"
@@ -75,6 +81,16 @@ class Client(models.Model):
 
     def get_type(self):
         return self.__class__.__name__
+
+class OldAddress(AddressBase):
+    client = models.ForeignKey(Client)
+    deprication_date = models.DateField()
+
+    def __unicode__(self):
+        return u'%s, %s' % (self.postcode, self.address1)
+
+    class Meta:
+        verbose_name_plural="old addresses"
 
 class Person(models.Model):
     title = models.CharField(max_length=48)
@@ -130,13 +146,18 @@ class SippAdminPerson(models.Model):
     firstname = models.CharField(max_length=192)
     middlename = models.CharField(max_length=192, blank=True)
     lastname = models.CharField(max_length=192)
-    address = models.ForeignKey(Address)
 
     def __unicode__(self):
         return u'%s %s' % (self.firstname, self.lastname)
 
     class Meta:
         verbose_name_plural="sipp admin people"
+
+class SippAdminPersonAddress(AddressBase):
+    sippadminperson = models.OneToOneField(SippAdminPerson, primary_key=True)
+
+    class Meta:
+        verbose_name_plural="admin person addresses"
 
 class Sipp(Client):
     company = models.ForeignKey(SippProvider)
@@ -173,16 +194,6 @@ class LLC(Client):
 
     def __unicode__(self):
         return u'%s' % (self.name)
-
-class OldAddress(AddressBase):
-    client = models.ForeignKey(Client)
-    deprication_date = models.DateField()
-
-    def __unicode__(self):
-        return u'%s, %s' % (self.postcode, self.address1)
-
-    class Meta:
-        verbose_name_plural="old addresses"
 
 class Syndicate(models.Model):
     name = models.CharField(max_length=32)
