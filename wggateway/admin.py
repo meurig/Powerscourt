@@ -13,6 +13,9 @@ class PurchaseAdmin(admin.ModelAdmin):
     list_display = ('code', 'notional',)
     #list_display = ('code', 'client', 'product', 'notional', 'notional_currency',)
 
+class SippAdmin(admin.ModelAdmin):
+    exclude = ('address',)
+
 admin.site.register(Address)
 admin.site.register(Client)
 admin.site.register(Currency)
@@ -27,5 +30,5 @@ admin.site.register(Purchase, PurchaseAdmin)
 admin.site.register(Rent)
 admin.site.register(SippProvider)
 admin.site.register(SippAdminPerson)
-admin.site.register(Sipp)
+admin.site.register(Sipp, SippAdmin)
 admin.site.register(Syndicate)
