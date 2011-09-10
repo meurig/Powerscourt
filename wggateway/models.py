@@ -56,16 +56,11 @@ class Address(AddressBase):
     class Meta:
         verbose_name_plural="addresses"
 
-#class ClientAddress(AddressBase):
-
-    #class Meta:
-        #verbose_name_plural="client addresses"
-
 class Client(models.Model):
     code = models.CharField(max_length=18, unique=True)
-    address = models.ForeignKey(Address)
+    #address = models.ForeignKey(Address)
+    #address = models.OneToOneField(ClientAddress)
     objects = InheritanceManager()
-    #clientaddress = models.OneToOneField(ClientAddress)
 
     def get_description(self):
         return "Generic client object, no type assigned"
@@ -81,6 +76,12 @@ class Client(models.Model):
 
     def get_type(self):
         return self.__class__.__name__
+
+class ClientAddress(AddressBase):
+    client = models.OneToOneField(Client, primary_key=True)
+
+    class Meta:
+        verbose_name_plural="client addresses"
 
 class OldAddress(AddressBase):
     client = models.ForeignKey(Client)
@@ -205,6 +206,9 @@ class Syndicate(models.Model):
 class ProductProvider(models.Model):
     name = models.CharField(max_length=64)
 
+    def get_absolute_url(self):
+        return "/product_provider/%i/" % self.id
+
     def __unicode__(self):
         return self.name
 
@@ -257,6 +261,9 @@ class Purchase(models.Model):
     shares_cert_date = models.DateField()
     shares_cert_sent_date = models.DateField()
     notes = models.TextField()
+
+    def get_client_subclass(self):
+        return Client.objects.select_subclasses().get(pk=self.client.id)
 
     def get_notional(self):
         return self.notional / 100
