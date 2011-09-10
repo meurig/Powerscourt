@@ -1,0 +1,8 @@
+{% extends "product.html" %}
+{% block title %}Product Provider Detail{% endblock %}
+{% block content %}
+<h1>Product Provider Detail</h1>
+<div class="formrow"><div class="formlabel2">Provider</div> <div class="formfield">{{ productprovider.name }}</div>
+    <div class="formlabel2"><a href="{% url admin:wggateway_productprovider_change productprovider.id %}">Edit</a></div>
+</div>
+{% endblock %}
