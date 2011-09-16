@@ -1,13 +1,12 @@
 from django.shortcuts import render_to_response
 from django.db.models import Q
 from wggateway.models import Client
-from wggateway.forms import ClientSearchForm, ProductForm
-from django.contrib.auth import logout
+from wggateway.forms import ClientSearchForm
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.generic import DetailView, ListView, TemplateView
 
-def logout_view(request):
-    logout(request)
-    return render_to_response('home.html')
-
+@login_required
 def clientsearch(request):
     if request.method == 'POST':
         form = ClientSearchForm(request.POST)
@@ -28,6 +27,20 @@ def clientsearch(request):
         form = ClientSearchForm()
     return render_to_response('search_form.html', {'form': form})
 
-def product(request):
-    form = ProductForm()
-    return render_to_response('product_form.html', {'form': form})
+class DetailViewLocked(DetailView):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DetailViewLocked, self).dispatch(*args, **kwargs)
+
+class ListViewLocked(ListView):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ListViewLocked, self).dispatch(*args, **kwargs)
+
+class TemplateViewLocked(TemplateView):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(TemplateViewLocked, self).dispatch(*args, **kwargs)

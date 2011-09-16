@@ -13,6 +13,6 @@ class ClientSearchForm(forms.Form):
     post_code = forms.CharField(required=False)
     email = forms.CharField(required=False)
 
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Product
+#class ProductForm(forms.ModelForm):
+    #class Meta:
+        #model = Product
