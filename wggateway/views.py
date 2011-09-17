@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from django.db.models import Q
-from wggateway.models import Client
-from wggateway.forms import ClientSearchForm
+from models import Client
+from forms import ClientSearchForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView, TemplateView

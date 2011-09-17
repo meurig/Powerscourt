@@ -1,5 +1,12 @@
 # Django settings for powerscourt project.
 
+import os
+import django
+# calculated paths for django and the site
+# used as starting points for various other paths
+DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -100,4 +107,5 @@ INSTALLED_APPS = (
 )
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/Users/meurig/djcode/powerscourt/static/'
+#STATIC_ROOT = '/Users/meurig/djcode/powerscourt/static/'
+STATIC_ROOT = os.path.join(SITE_ROOT, 'static')
