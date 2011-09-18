@@ -198,7 +198,6 @@ class LLC(Client):
 
 class Syndicate(models.Model):
     name = models.CharField(max_length=32)
-    clients = models.ManyToManyField(Client)
 
     def __unicode__(self):
         return self.name
