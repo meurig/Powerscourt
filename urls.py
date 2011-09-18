@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from wggateway import views
 from wggateway.views import DetailViewLocked, ListViewLocked, TemplateViewLocked
-from wggateway.models import Client, GroupOfPeople, Sipp, Product, Purchase, ProductProvider
+from wggateway.models import Client, GroupOfPeople, Sipp, Product, Purchase, ProductProvider, Syndicate
 from django.contrib.auth.views import login
 
 # Uncomment the next two lines to enable the admin:
@@ -73,6 +73,15 @@ urlpatterns = patterns('',
         queryset=Purchase.objects.all(),
         template_name="purchase_detail.html",
         ), name="purchase"),
+    url(r'^syndicates/(?P<page>[0-9]*)$', ListViewLocked.as_view(
+        queryset=Syndicate.objects.all(),
+        template_name="syndicate_list.html",
+        paginate_by=25,
+        ), name="syndicates"),
+    url(r'^syndicate/(?P<pk>\w+)/$', DetailViewLocked.as_view(
+        queryset=Syndicate.objects.all(),
+        template_name="syndicate_detail.html",
+        ), name="syndicate"),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'admin/login.html'}),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name="logout"),
     url(r'^accounts/$', 'django.views.generic.simple.redirect_to', {'url': 'login/'}),

@@ -199,6 +199,12 @@ class LLC(Client):
 class Syndicate(models.Model):
     name = models.CharField(max_length=32)
 
+    def get_absolute_url(self):
+        return "/syndicate/%i/" % self.id
+
+    def get_admin_change_url(self):
+        return urlresolvers.reverse('admin:wggateway_syndicate_change', args=(self.id,))
+
     def __unicode__(self):
         return self.name
 
