@@ -1,0 +1,32 @@
+{% extends "syndicate.html" %}
+{% load humanize %}
+{% block title %}Syndicate Detail{% endblock %}
+{% block content %}
+<h1>Syndicate Detail</h1>
+<div class="formrow"><div class="formlabel2">Name</div> <div class="formfield">{{ syndicate.name }}</div>
+    <div class="formlabel2"><a href="{% url admin:wggateway_syndicate_change syndicate.id %}">Edit</a></div>
+</div>
+<div class="formrow">
+    <div class="formlabel2">Purchases</div>
+    <div class="formfieldwide">
+        <table class="ps_table"> 
+            <tr class="ps_row"> 
+                <td class="ps_col">Code</td> 
+                <td class="ps_col">Currency</td> 
+                <td class="ps_col">Notional</td> 
+                <td class="ps_col">Product</td> 
+                <td class="ps_col">Provider</td> 
+            </tr> 
+            {% for purchase in syndicate.purchase_set.all %}
+            <tr class="ps_row">
+                <td class="ps_col">{{ purchase.code }}</td>
+                <td class="ps_col">{{ purchase.notional_currency }}</td>
+                <td class="ps_col">{{ purchase.notional_amount|intcomma }}</td>
+                <td class="ps_col">{{ purchase.product }}</td>
+                <td class="ps_col">{{ purchase.product.provider }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div> 
+{% endblock %}
