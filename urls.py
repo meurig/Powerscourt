@@ -3,10 +3,15 @@ from wggateway import views
 from wggateway.views import DetailViewLocked, ListViewLocked, TemplateViewLocked
 from wggateway.models import Client, GroupOfPeople, Sipp, Product, Purchase, ProductProvider, Syndicate
 from django.contrib.auth.views import login
+from djangorestframework.resources import ModelResource
+from djangorestframework.views import ListOrCreateModelView, InstanceModelView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
+class ClientResource(ModelResource):
+    model = Client
 
 urlpatterns = patterns('',
     # Example:
@@ -86,4 +91,6 @@ urlpatterns = patterns('',
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name="logout"),
     url(r'^accounts/$', 'django.views.generic.simple.redirect_to', {'url': 'login/'}),
     url(r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
+    url(r'^api/clients/$', ListOrCreateModelView.as_view(resource=ClientResource)),
+    url(r'^api/client/(?P<pk>[^/]+)/$', InstanceModelView.as_view(resource=ClientResource)),
 )
