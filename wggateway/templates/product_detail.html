@@ -1,4 +1,5 @@
 {% extends "product.html" %}
+{% load humanize %}
 {% block title %}Product Detail{% endblock %}
 {% block content %}
 <h1>Product Detail</h1>
@@ -11,4 +12,52 @@
 <div class="formrow"><div class="formlabel2">Prefix</div> <div class="formfield">{{ product.prefix }}</div></div>
 <div class="formrow"><div class="formlabel2">Increment</div> <div class="formfield">{{ product.increment }}</div></div>
 <div class="formrow"><div class="formlabel2">Display Order</div> <div class="formfield">{{ product.display_order }}</div></div>
+<div class="formheaderrow">
+    <div class="formheadercell">Amount invested</div>
+</div>
+<div class="formrow">
+    <div class="formlabel2"></div>
+    {% for currency, amount in product.get_amounts_invested.items %}
+    <div class="formamount">{{ currency }} {{ amount|intcomma }}</div>
+    {% endfor %}
+</div>
+<div class="formheaderrow">
+    <div class="formheadercell">Returns</div>
+</div>
+{% for returndate, currencies in product.get_returns %}
+<div class="formrow">
+    <div class="formlabel2">{{ returndate|date:"SHORT_DATE_FORMAT" }}</div>
+    {% for currency, amount in currencies.items %}
+    <div class="formamount">{{ currency }} {{ amount|intcomma }}</div>
+    {% endfor %}
+</div>
+{% endfor %}
+<div class="formheaderrow">
+    <div class="formheadercell">Total future payments</div>
+</div>
+<div class="formrow">
+    <div class="formlabel2"></div>
+    {% for currency, amount in product.get_total_future_returns %}
+    <div class="formamount">{{ currency }} {{ amount|intcomma }}</div>
+    {% endfor %}
+</div>
+<div class="formheaderrow">
+    <div class="formheadercell">Purchases/Clients (current)</div>
+</div>
+{% for purchase in product.get_active_purchases %}
+<div class="formrow">
+    <div class="formlabel2"><a href={% url purchase pk=purchase.id %}>{{ purchase.code }} {{ purchase.client.code }}</a></div>
+    <div class="formlabel2">{{ purchase.notional_currency }} {{ purchase.notional|intcomma }}</div>
+    <div class="formfield">{{ purchase.get_client_subclass.get_description }} - {{ purchase.client.clientaddress.email1 }} - {{ purchase.form }}</div>
+</div>
+{% endfor %}
+<div class="formheaderrow">
+    <div class="formheadercell">Purchases/Clients (former)</div>
+</div>
+{% for purchase in product.get_inactive_purchases %}
+<div class="formrow">
+    <div class="formlabel2"><a href={% url purchase pk=purchase.id %}>{{ purchase.code }} {{ purchase.client.code }}</a></div>
+    <div class="formfield">{{ purchase.get_client_subclass.get_description }}</div>
+</div>
+{% endfor %}
 {% endblock %}

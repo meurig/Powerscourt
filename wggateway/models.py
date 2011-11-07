@@ -8,10 +8,12 @@
 # into your database.
 
 from django.db import models
+from django.db.models import Sum
 from model_utils.managers import InheritanceManager
 from smart_selects.db_fields import ChainedForeignKey
 import locale
 from django.core import urlresolvers
+import datetime
 
 class AddressBase(models.Model):
     TYPE_CHOICES = (
@@ -227,6 +229,72 @@ class Product(models.Model):
     def get_absolute_url(self):
         return "/product/%i/" % self.id
 
+    def get_active_purchases(self):
+        return self.purchase_set.filter(active=1)
+
+    def get_inactive_purchases(self):
+        return self.purchase_set.filter(active=0)
+
+    def get_invested_currencies(self):
+        return Currency.objects.filter(purchase_notional_currency__product__id = self.id)
+
+    def get_amounts_invested(self):
+        currency_amounts={}
+        for currency in self.get_invested_currencies():
+            currency_amounts[currency.code] = self.purchase_set.filter(notional_currency__code=currency.code, active=1).aggregate(Sum('notional'))['notional__sum']
+        return currency_amounts
+
+    def get_returns(self):
+        """
+        Returns an ordered list of pairs, where each pair is made up of a date and a dictionary, and each dictionary has currencies as its keys and amounts as its values
+        """
+        dated_returns = {}
+        for rent in Rent.objects.filter(purchase__product__id = self.id):
+            if rent.due_date not in dated_returns:
+                dated_returns[rent.due_date] = {}
+            for currency, amount in rent.get_total_amounts():
+                if currency not in dated_returns[rent.due_date]:
+                    dated_returns[rent.due_date][currency] = 0
+                dated_returns[rent.due_date][currency] += amount
+        dated_returns_list=dated_returns.items()
+        dated_returns_list.sort()
+        return dated_returns_list
+
+    def get_future_returns(self):
+        """
+        As for get_returns, but only where the date >= today.
+        """
+        returns_list = self.get_returns()
+        future_returns = []
+        for date, returns in returns_list:
+            if date >= datetime.date.today():
+                #returns_list.remove((date, returns)) seems to cause problems removing from list while iterating over it?
+                future_returns.append((date, returns))
+        return future_returns
+
+    def get_total_future_returns(self):
+        """
+        Returns a sorted list of currency,amount tuples listing the total future returns for this product
+        """
+        total_returns = {}
+        for currency in self.get_invested_currencies():
+            total_returns[currency.code] = 0
+        for date, returns in self.get_future_returns():
+            for currency, amount in returns.items():
+                total_returns[currency.code] += amount
+        return total_returns.items()
+
+    #def get_active_client_purchase_info(self):
+    #    clients={}
+    #    for purchase in self.purchase_set.all():
+    #        client = purchase.client
+    #        if purchase.active == 1:
+    #            if client.id not in clients:
+    #                clients[client.id] = purchase.notional
+    #            else:
+    #                clients[client.id] += purchase.notional
+    #    return clients
+
     def __unicode__(self):
         return self.name
 
@@ -241,7 +309,7 @@ class Currency(models.Model):
     name = models.CharField(max_length=32)
 
     def __unicode__(self):
-        return u'%s - %s' % (self.code, self.name)
+        return u'%s' % (self.code)
 
     class Meta:
         verbose_name_plural="currencies"
@@ -312,6 +380,27 @@ class Rent(models.Model):
             return "Yes"
         else:
             return "No"
+
+    def get_calculated_amount(self):
+        """
+        This assumes all amounts are in the same currency which is often not the case.
+        """
+        return self.base_amount + self.fixed_fee_added_amount + self.variable_fee_added_amount - self.fixed_fee_deducted_amount - self.variable_fee_deducted_amount
+
+    def get_total_amounts(self):
+        """
+        Returns an ordered list of (currency, amount) tuples representing the total amount for this 'rent'
+        """
+        amounts={self.base_currency: self.base_amount + self.variable_fee_added_amount - self.variable_fee_deducted_amount}
+        if self.fixed_fee_added_currency not in amounts:
+            amounts[self.fixed_fee_added_currency] = 0
+        amounts[self.fixed_fee_added_currency] += self.fixed_fee_added_amount
+        if self.fixed_fee_deducted_currency not in amounts:
+            amounts[self.fixed_fee_deducted_currency] = 0
+        amounts[self.fixed_fee_deducted_currency] -= self.fixed_fee_deducted_amount
+        amounts_list = amounts.items()
+        amounts_list.sort()
+        return amounts_list
 
     class Meta:
         verbose_name_plural="rent"
