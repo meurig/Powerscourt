@@ -34,10 +34,24 @@
             {% for rent in purchase.rent_set.all %}
             <tr class="ps_row">
                 <td class="ps_col">{{ rent.due_date|date:"SHORT_DATE_FORMAT" }}</td>
-                <td class="ps_col">{{ rent.type }}</td>
+                <td class="ps_col">{{ rent.type|capfirst }}</td>
                 <td class="ps_col">{{ rent.base_currency.code }} {{ rent.base_amount|intcomma }}</td>
-                <td class="ps_col">?</td>
-                <td class="ps_col">?</td>
+                <td class="ps_col">
+                    {% for currency, amount in rent.get_fees_deducted %}
+                        {{ currency }} {{ amount|intcomma }}
+                        {% if not forloop.last %} &amp {% endif %}
+                    {% empty %}
+                        None
+                    {% endfor %}
+                </td>
+                <td class="ps_col">
+                    {% for currency, amount in rent.get_fees_added %}
+                        {{ currency }} {{ amount|intcomma }}
+                        {% if not forloop.last %} &amp {% endif %}
+                    {% empty %}
+                        None
+                    {% endfor %}
+                </td>
                 <td class="ps_col">{{ rent.get_paid }}</td>
             </tr>
             {% endfor %}

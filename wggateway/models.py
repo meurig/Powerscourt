@@ -402,6 +402,41 @@ class Rent(models.Model):
         amounts_list.sort()
         return amounts_list
 
+    def get_fees_deducted(self):
+        """
+        Returns a list of currency,amount pairs representing the fees deducted from this 'rent'
+        """
+        fees_deducted={}
+        if self.variable_fee_deducted_amount > 0:
+            fees_deducted[self.base_currency.code] = self.variable_fee_deducted_amount
+        if self.fixed_fee_deducted_amount > 0:
+            if self.fixed_fee_deducted_currency == self.base_currency:
+                if self.variable_fee_deducted_amount > 0:
+                    fees_deducted[self.base_currency.code] += self.fixed_fee_deducted_amount
+                else:
+                    fees_deducted[self.base_currency.code] = self.fixed_fee_deducted_amount
+            else:
+                fees_deducted[self.fixed_fee_deducted_currency.code] = self.fixed_fee_deducted_amount
+        return sorted(fees_deducted.items())
+
+    def get_fees_added(self):
+        """
+        Returns a list of currency,amount pairs representing the fees added to this 'rent'
+        """
+        fees_added={}
+        if self.variable_fee_added_amount > 0:
+            fees_added[self.base_currency.code] = self.variable_fee_added_amount
+        if self.fixed_fee_added_amount > 0:
+            if self.fixed_fee_added_currency == self.base_currency:
+                if self.variable_fee_added_amount > 0:
+                    fees_added[self.base_currency.code] += self.fixed_fee_added_amount
+                else:
+                    fees_added[self.base_currency.code] = self.fixed_fee_added_amount
+            else:
+                fees_added[self.fixed_fee_added_currency.code] = self.fixed_fee_added_amount
+        return sorted(fees_added.items())
+
+
     class Meta:
         verbose_name_plural="rent"
 
