@@ -1,0 +1,6 @@
+/*
+    Information on customizing the Django admin CSS:
+    http://docs.djangoproject.com/en/dev/obsolete/admin-css/
+*/
+#header { background: -webkit-gradient(linear, 0 0, 0 100%, from(#A6C8ED), to(#8FACCC)); }
+#branding h1 { color: white; }
