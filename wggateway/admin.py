@@ -5,14 +5,44 @@ from powerscourt.wggateway.models import ClientAddress
 
 class ClientAddressInline(admin.StackedInline):
     model = ClientAddress
+    fields = (
+            'type',
+            'address1',
+            'address2',
+            'address3',
+            'city',
+            'county',
+            'postcode',
+            'country',
+            'email1',
+            'email2',
+            'phone1',
+            'phone2',
+    )
 
 class GroupOfPeopleAdmin(admin.ModelAdmin):
     filter_horizontal = ('people',)
     inlines = [ClientAddressInline,]
     list_display = ('code',)
+    fields = (
+            'code',
+            'people',
+    )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['code']
+        else:
+            return []
 
 class ClientAdmin(admin.ModelAdmin):
     inlines = [ClientAddressInline,]
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['code']
+        else:
+            return []
 
 class LLCAdmin(admin.ModelAdmin):
     list_display = ('code', 'name',)
@@ -21,29 +51,45 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('provider',)
 
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ('code', 'notional',)
+    list_display = ('code', 'client', 'product', 'notional_currency', 'notional',)
     #list_display = ('code', 'client', 'product', 'notional', 'notional_currency',)
     list_filter = ('product__provider', 'product')
-    #fields = (
-        #'client',
-        #'product',
-        #'code',
-        #'active',
-        #'password',
-        #'start_date',
-        #'form',
-        #'notional',
-        #'notional_currency',
-        #'duration',
-        #'signature_date',
-        #'syndicate',
-        #'date_funds_to_syndicate',
-        #'shares_no',
-        #'shares_value',
-        #'shares_currency',
-        #'shares_cert_date',
-        #'shares_cert_sent_date',
-        #'notes',)
+    fieldsets = (
+        (None, {
+            'fields': (
+                    'client',
+                    'code',
+                    'product',
+                    'start_date',
+                    'syndicate',
+                    'form',
+                    'notional_currency',
+                    'notional',
+                    'password',
+                    'signature_date',
+                    'notes',
+            )
+        }),
+        ('Advanced options', {
+            'classes': ('collapse',),
+            'fields': (
+                    'active',
+                    'duration',
+                    'date_funds_to_syndicate',
+                    'shares_no',
+                    'shares_value',
+                    'shares_currency',
+                    'shares_cert_date',
+                    'shares_cert_sent_date',
+            )
+        }),
+    )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['code']
+        else:
+            return []
 
 class SippAdminPersonAddressInLine(admin.StackedInline):
     model = SippAdminPersonAddress
