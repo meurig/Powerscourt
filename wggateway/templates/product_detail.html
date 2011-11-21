@@ -2,6 +2,7 @@
 {% load humanize %}
 {% block title %}Product Detail{% endblock %}
 {% block content %}
+
 <h1>Product Detail</h1>
 <div class="formrow"><div class="formlabel2">Name</div> <div class="formfield">{{ product.name }}</div>
     <div class="formlabel2"><a href="{% url admin:wggateway_product_change product.id %}">Edit</a></div>
@@ -12,6 +13,7 @@
 <div class="formrow"><div class="formlabel2">Prefix</div> <div class="formfield">{{ product.prefix }}</div></div>
 <div class="formrow"><div class="formlabel2">Increment</div> <div class="formfield">{{ product.increment }}</div></div>
 <div class="formrow"><div class="formlabel2">Display Order</div> <div class="formfield">{{ product.display_order }}</div></div>
+
 <div class="formheaderrow">
     <div class="formheadercell">Amount invested</div>
 </div>
@@ -21,6 +23,7 @@
     <div class="formamount">{{ currency }} {{ amount|intcomma }}</div>
     {% endfor %}
 </div>
+
 <div class="formheaderrow">
     <div class="formheadercell">Returns</div>
 </div>
@@ -32,6 +35,7 @@
     {% endfor %}
 </div>
 {% endfor %}
+
 <div class="formheaderrow">
     <div class="formheadercell">Total future payments</div>
 </div>
@@ -41,6 +45,7 @@
     <div class="formamount">{{ currency }} {{ amount|intcomma }}</div>
     {% endfor %}
 </div>
+
 <div class="formheaderrow">
     <div class="formheadercell">Purchases/Clients (current)</div>
 </div>
@@ -51,6 +56,7 @@
     <div class="formfield">{{ purchase.get_client_subclass.get_description }} - {{ purchase.client.clientaddress.email1 }} - {{ purchase.form }}</div>
 </div>
 {% endfor %}
+
 <div class="formheaderrow">
     <div class="formheadercell">Purchases/Clients (former)</div>
 </div>
@@ -60,4 +66,5 @@
     <div class="formfield">{{ purchase.get_client_subclass.get_description }}</div>
 </div>
 {% endfor %}
+
 {% endblock %}
