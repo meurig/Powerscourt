@@ -381,11 +381,11 @@ class Rent(models.Model):
         else:
             return "No"
 
-    def get_calculated_amount(self):
-        """
-        This assumes all amounts are in the same currency which is often not the case.
-        """
-        return self.base_amount + self.fixed_fee_added_amount + self.variable_fee_added_amount - self.fixed_fee_deducted_amount - self.variable_fee_deducted_amount
+    #def get_calculated_amount(self):
+        #"""
+        #This assumes all amounts are in the same currency which is often not the case.
+        #"""
+        #return self.base_amount + self.fixed_fee_added_amount + self.variable_fee_added_amount - self.fixed_fee_deducted_amount - self.variable_fee_deducted_amount
 
     def get_total_amounts(self):
         """
