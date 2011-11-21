@@ -339,7 +339,9 @@ class Purchase(models.Model):
         return Client.objects.select_subclasses().get(pk=self.client.id)
 
     def get_notional(self):
-        return self.notional / 100
+        # need to find a currency datatype
+        #return self.notional / 100
+        return self.notional
 
     def get_absolute_url(self):
         return "/purchase/%i/" % self.id
