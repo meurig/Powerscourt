@@ -23,7 +23,7 @@ class ClientAddressInline(admin.StackedInline):
 class GroupOfPeopleAdmin(admin.ModelAdmin):
     filter_horizontal = ('people',)
     inlines = [ClientAddressInline,]
-    list_display = ('code',)
+    list_display = ('code','get_description')
     fields = (
             'code',
             'people',
@@ -47,6 +47,8 @@ class ClientAdmin(admin.ModelAdmin):
 class LLCAdmin(admin.ModelAdmin):
     list_display = ('code', 'name',)
 
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ('get_readable_name',)
 class ProductAdmin(admin.ModelAdmin):
     list_filter = ('provider',)
 
@@ -87,7 +89,7 @@ class PurchaseAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ['code']
+            return ['code', 'client']
         else:
             return []
 
@@ -112,7 +114,7 @@ admin.site.register(Currency)
 admin.site.register(GroupOfPeople, GroupOfPeopleAdmin)
 admin.site.register(LLC, LLCAdmin)
 admin.site.register(OldAddress)
-admin.site.register(Person)
+admin.site.register(Person, PersonAdmin)
 admin.site.register(ProductProvider)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(PurchaseForm)
