@@ -1,20 +1,29 @@
 {% extends "product.html" %}
+{% load humanize %}
 {% block title %}Product Provider Detail{% endblock %}
 {% block content %}
+
 <h1>Product Provider Detail</h1>
-<div class="formrow">
-    <div class="formlabel2">Provider</div>
-    <div class="formfield">{{ productprovider.name }}</div>
+<div class="formrow"><div class="formlabel2">Provider</div><div class="formfield">{{ productprovider.name }}</div>
     <div class="formlabel2"><a href="{% url admin:wggateway_productprovider_change productprovider.id %}">Edit</a></div>
 </div>
-<div class="formrow">
-    <div class="formlabel2">No of purchases</div>
-    <div class="formfield">?</div>
+<div class="formrow"><div class="formlabel2">No of purchases</div><div class="formfield">{{ productprovider.get_purchase_count }}</div></div>
+
+<div class="formheaderrow">
+    <div class="formheadercell">Amount invested</div>
 </div>
+<div class="formrow">
+    <div class="formlabel2"></div>
+    {% for currency, amount in productprovider.get_amounts_invested.items %}
+    <div class="formamount">{{ currency }} {{ amount|intcomma }}</div>
+    {% endfor %}
+</div>
+
 {% for product in productprovider.product_set.all %}
 <div class="formrow">
     <div class="formlabel2">Product</div>
     <div class="formfield"><a href="{% url product product.id %}">{{ product.name }}</a></div>
 </div> 
 {% endfor %}
+
 {% endblock %}

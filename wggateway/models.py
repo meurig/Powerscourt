@@ -213,6 +213,44 @@ class Syndicate(models.Model):
 class ProductProvider(models.Model):
     name = models.CharField(max_length=64)
 
+    def get_purchase_count(self):
+        #return Purchase.objects.filter(product__provider__id = self.id).count()
+        return self.get_purchases().count()
+
+    def get_purchases(self):
+        return Purchase.objects.filter(product__provider__id = self.id, active=1)
+
+    def get_returns(self):
+        """
+        Returns an ordered list of pairs, where each pair is made up of a date and a dictionary, and each dictionary has currencies as its keys and amounts as its values
+        """
+        dated_returns = {}
+        for rent in Rent.objects.filter(purchase__product__id = self.id):
+            if rent.due_date not in dated_returns:
+                dated_returns[rent.due_date] = {}
+            for currency, amount in rent.get_total_amounts():
+                if currency not in dated_returns[rent.due_date]:
+                    dated_returns[rent.due_date][currency] = 0
+                dated_returns[rent.due_date][currency] += amount
+        dated_returns_list=dated_returns.items()
+        dated_returns_list.sort()
+        return dated_returns_list
+
+    def get_invested_currencies(self):
+        """
+        Returns the set of currencies that have ever been the notional currency of a purchase of a product issued by this provider
+        """
+        return Currency.objects.filter(purchase_notional_currency__product__provider__id = self.id)
+
+    def get_amounts_invested(self):
+        """
+        Currently broken... doesn't match prototype.
+        """
+        currency_amounts={}
+        for currency in self.get_invested_currencies():
+            currency_amounts[currency.code] = self.get_purchases().filter(notional_currency__code=currency.code).aggregate(Sum('notional'))['notional__sum']
+        return currency_amounts
+
     def get_absolute_url(self):
         return "/product_provider/%i/" % self.id
 
